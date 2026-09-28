@@ -1,70 +1,69 @@
-# Document Bot with Apache Spark
+Document Bot con Apache Spark
 
-A Python tool that extracts text from documents (PDF, Word, TXT), generates summaries, and answers questions about their content — using a local LLM (no paid API required) and Apache Spark for parallel batch processing.
+Una herramienta de Python que extrae texto de documentos (PDF, Word, TXT), genera resúmenes y responde preguntas sobre su contenido, utilizando un LLM local (sin necesidad de una API de pago) y Apache Spark para el procesamiento por lotes en paralelo.
 
-## Features
+Funcionalidades
 
--  Multi-format extraction: PDF, DOCX, TXT
--  Local LLM summarization and Q&A via [Ollama](https://ollama.com) (llama3.2)
-- Parallel document processing with PySpark
-- Automatic chunking (map-reduce) for long documents that exceed the model's context
-- Robust error handling — a corrupted file won't crash the whole batch
--  Unit tests with pytest
+Extracción en múltiples formatos: PDF, DOCX, TXT
 
-## How it works
+Resumen y preguntas y respuestas mediante un LLM local a través de Ollama
+ (llama3.2)
 
-1. Spark reads all documents in `data/` and distributes them across workers.
-2. Each worker extracts the text and generates a summary (chunking automatically if the document is long).
-3. Results are collected and shown to the user.
-4. The user picks a document and can ask free-form questions about it in an interactive loop.
+Procesamiento paralelo de documentos con PySpark
 
-## Tech stack
+División automática en fragmentos (map-reduce) para documentos largos que superan el contexto del modelo
 
-Python · Apache Spark (PySpark) · Ollama (local LLM) · PyMuPDF · python-docx · pytest
+Gestión robusta de errores: un archivo corrupto no hará que falle todo el lote
 
-## Installation
+Pruebas unitarias con pytest
 
-**Requirements:** Python 3.10+, Java (JDK 17), [Ollama](https://ollama.com/download)
+Cómo funciona
 
-```bash
-# Clone the repo
+Spark lee todos los documentos de data/ y los distribuye entre los workers.
+
+Cada worker extrae el texto y genera un resumen (dividiéndolo automáticamente en fragmentos si el documento es largo).
+
+Los resultados se recopilan y se muestran al usuario.
+
+El usuario selecciona un documento y puede hacer preguntas de forma libre sobre él mediante un bucle interactivo.
+
+Tecnologías utilizadas
+
+Python · Apache Spark (PySpark) · Ollama (LLM local) · PyMuPDF · python-docx · pytest
+
+Instalación
+
+Requisitos: Python 3.10+, Java (JDK 17), Ollama
+
+# Clonar el repositorio
 git clone https://github.com//document-bot-spark.git
 cd document-bot-spark
 
-# Create and activate a virtual environment
+# Crear y activar un entorno virtual
 python -m venv venv
 venv\Scripts\Activate.ps1   # Windows
 # source venv/bin/activate  # Mac/Linux
 
-# Install dependencies
+# Instalar las dependencias
 pip install -r requirements.txt
 
-# Download the local model
+# Descargar el modelo local
 ollama pull llama3.2
-```
 
-## Usage
+Uso
 
-Place your documents (PDF, DOCX, or TXT) in the `data/` folder, then run:
+Coloca tus documentos (PDF, DOCX o TXT) en la carpeta data/ y después ejecuta:
 
-```bash
 python main.py
-```
 
-The bot will summarize every document in parallel, let you pick one, and open an interactive Q&A session.
 
-## Running tests
+El bot resumirá todos los documentos en paralelo, te permitirá seleccionar uno y abrirá una sesión interactiva de preguntas y respuestas.
 
-```bash
+Ejecutar las pruebas
 pytest tests/ -v
-```
 
-## Known limitations
+Limitaciones conocidas
 
-- Q&A retrieval for long documents uses simple keyword matching rather than semantic search. A natural next step would be embeddings + a vector store (e.g. ChromaDB) for true RAG-based retrieval.
-- Small local models (like llama3.2) can occasionally add extra content beyond what's requested — mitigated with strict prompting, but not 100% guaranteed.
+La recuperación de información para preguntas y respuestas en documentos largos utiliza una búsqueda sencilla basada en palabras clave en lugar de una búsqueda semántica. Un siguiente paso natural sería utilizar embeddings junto con un almacén vectorial (por ejemplo, ChromaDB) para una verdadera recuperación basada en RAG.
 
-   ## Demo
-
-   ![Demo](screenshots/)
-   
+Los modelos locales pequeños (como llama3.2) pueden añadir ocasionalmente contenido adicional más allá de lo solicitado. Esto se intenta evitar mediante instrucciones (prompts) estrictas, pero no se puede garantizar al 100 %.
