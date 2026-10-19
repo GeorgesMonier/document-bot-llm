@@ -36,8 +36,7 @@ Instalación
 Requisitos: Python 3.10+, Java (JDK 17), Ollama
 
 # Clonar el repositorio
-git clone https://github.com//document-bot-spark.git
-cd document-bot-spark
+git clone https://github.com/GeorgesMonier/document-bot-llm.git
 
 # Crear y activar un entorno virtual
 python -m venv venv
